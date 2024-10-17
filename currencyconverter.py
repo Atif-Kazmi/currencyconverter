@@ -1,41 +1,25 @@
 import streamlit as st
 import requests
+import pandas as pd
+import altair as alt
 
 # Set up the currency converter UI
-st.title("Currency Converter")
+st.set_page_config(page_title="Enhanced Currency Converter", layout="centered", initial_sidebar_state="auto")
+
+# Title and description
+st.title("🌍 Enhanced Currency Converter")
+st.markdown("Convert currencies quickly and easily. Now with exchange rate trends and history.")
 
 # Set up the API (replace with your actual API key)
 API_KEY = '6d11d031b318e43b8475dc32'
 url = f'https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD'
 
-# Use st.cache_data to cache the exchange rates
-@st.cache_data
+# Caching API data to improve performance
+@st.cache_data(ttl=3600)
 def get_exchange_rates():
     try:
         response = requests.get(url)
         data = response.json()
         if data['result'] == 'success':
             return data['conversion_rates']
-        else:
-            st.error("Error fetching exchange rates.")
-            return None
-    except Exception as e:
-        st.error(f"Failed to fetch data. {e}")
-        return None
-
-# Fetch exchange rates
-rates = get_exchange_rates()
-
-if rates:
-    # Create input fields for currencies and amount
-    amount = st.number_input("Enter amount:", min_value=0.0, format="%.2f")
-    from_currency = st.selectbox("From currency", list(rates.keys()), index=list(rates.keys()).index("USD"))
-    to_currency = st.selectbox("To currency", list(rates.keys()), index=list(rates.keys()).index("EUR"))
-
-    # Convert the currency
-    if st.button("Convert"):
-        conversion_rate = rates[to_currency] / rates[from_currency]
-        converted_amount = amount * conversion_rate
-        st.success(f"{amount} {from_currency} = {converted_amount:.2f} {to_currency}")
-else:
-    st.warning("Could not load exchange rates. Please try again later.")
+       
