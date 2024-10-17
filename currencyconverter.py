@@ -5,7 +5,7 @@ import requests
 st.title("Currency Converter")
 
 # Set up the API (replace with your actual API key)
-API_KEY = 'YOUR_API_KEY'
+API_KEY = '6d11d031b318e43b8475dc32'
 url = f'https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD'
 
 # Use st.cache_data to cache the exchange rates
