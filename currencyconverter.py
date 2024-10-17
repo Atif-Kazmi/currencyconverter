@@ -8,7 +8,8 @@ st.title("Currency Converter")
 API_KEY = 'YOUR_API_KEY'
 url = f'https://v6.exchangerate-api.com/v6/{API_KEY}/latest/USD'
 
-@st.cache
+# Use st.cache_data to cache the exchange rates
+@st.cache_data
 def get_exchange_rates():
     try:
         response = requests.get(url)
